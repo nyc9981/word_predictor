@@ -69,10 +69,10 @@ body <- dashboardBody(
                 h2("How to use the app"),
                 p("You type the text in the text area.  As you type, the predicted next words immediately appear below the text area in the descending order of their probabilities according to the prediction model.  The app also dynamicly generates a plot about the probabilities for all the predicted words."),
                 #br(),
-                p("You could continue to type, or click one of the predicted words and the clicked word will then be inserted in to the text area.  You can also click the button Random Choice to insert a randomly chosen word from the list of predicted words.  The new predictions are made continuously based on the updated text with newly typed words, or inserted words if you clicked one of the predicted words)."),
+                p("You could continue to type, or click one of the predicted words and the clicked word will then be inserted in to the text area.  You can also click the button Random Choice to insert a randomly chosen word from the list of predicted words.  The new predictions are made continuously based on the updated text with newly typed words, or inserted words if you clicked one of the predicted words."),
                 p("Just for fun, you can keep clicking the Random Choice button to generate complete sentences."),
                 h3("Option"),
-                p("The number of predictions are set to 3 as default. You could change it to any number from 1 to 5 before or during typing in the text area. ")
+                p("The number of predictions is set to 3 as default. You could change it to any number from 1 to 5 before or during typing in the text area. ")
         ),
         tabItem(tabName = "about",
                 h2("About this Shiny app"),
