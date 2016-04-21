@@ -13,7 +13,7 @@ clean_input <- function(txt_input) {
     sens <- sens[length(sens)]
     
     # preprocess the text input the same way as with training text
-    stringr::str_trim(sens)
+    sens <- stringr::str_trim(sens)
     sens <- tolower(sens)
     sens <- gsub("’", "'", sens)
     sens <- gsub("[^[:alnum:][:space:]\']", " ", sens)
