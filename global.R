@@ -5,7 +5,6 @@ library(ggplot2)
 freq.table<-readRDS(file="freq.tableB.RDS")
 
 ####### CONSTANTs ######### 
-# TOP_RANK <- 5
 MAX_NGRAM <- 4
 ####### functions #########
 clean_input <- function(txt_input) {
@@ -15,20 +14,19 @@ clean_input <- function(txt_input) {
     
     # preprocess the text input the same way as with training text
     stringr::str_trim(sens)
-    sens<- tolower(sens)
+    sens <- tolower(sens)
     sens <- gsub("’", "'", sens)
     sens <- gsub("[^[:alnum:][:space:]\']", " ", sens)
-    sens<-iconv(sens, "latin1", "ASCII", sub="_0_")
+    sens <- iconv(sens, "latin1", "ASCII", sub="_0_")
     sens <- gsub("\\w*[0-9]\\w*"," ", sens)
     sens <- gsub(" www(.+) ", " ", sens)
     sens <- gsub("\\s+[b-hj-z]\\s+"," ", sens)
-    #sens <- paste(sens, collapse = " 0EOS0 ")
     sens <- gsub("\\s+", " ", sens)
     sens <- stringr::str_trim(sens)
     
     # if "", return the tag indicating the end of the sentence
     # otherwise, return the last incomplete sentence
-    if(sens=="") 
+    if(sens == "") 
         return("0EOS0")
     else 
         return(sens)
@@ -58,7 +56,7 @@ predict_sbf <- function(freq.table, typed_context) {
     })
     searchTerms <- c(searchTerms, "") # seach 1-gram
     
-    finalResult<-freq.table %>% 
+    finalResult <- freq.table %>% 
         filter(as.character(context) %in% searchTerms)
     
     finalResult <-
@@ -78,7 +76,6 @@ predict_sbf <- function(freq.table, typed_context) {
     # if the context ends with 0EOS0, then captalize all predictions
     if(capitalize_prediction) {
         finalResult$predicted <- stringi::stri_trans_totitle(finalResult$predicted)
-        #finalResult$predicted <- Hmisc::capitalize(finalResult$predicted)
     }
     
     finalResult
@@ -107,7 +104,6 @@ get_last_n_words <- function(s, n, sep=" ") {
 get_first_n_words <- function(s, n, sep=" ") {
     #stringr::word(s, 1, n)
     stopifnot(n>=1)
-    #stopifnot(nchar(s)>0)
     words <- unlist(strsplit(s, split = sep))
     len<-length(words)
     if(len<n) 
