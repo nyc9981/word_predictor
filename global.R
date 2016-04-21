@@ -2,7 +2,7 @@ library(shiny)
 library(dplyr)
 library(ggplot2)
 
-freq.table<-readRDS(file="freq.tableB.RDS")
+freq.table <- readRDS(file = "freq.tableB.RDS")
 
 ####### CONSTANTs ######### 
 MAX_NGRAM <- 4
@@ -20,7 +20,7 @@ clean_input <- function(txt_input) {
     sens <- iconv(sens, "latin1", "ASCII", sub="_0_")
     sens <- gsub("\\w*[0-9]\\w*"," ", sens)
     sens <- gsub(" www(.+) ", " ", sens)
-    sens <- gsub("\\s+[b-hj-z]\\s+"," ", sens)
+    sens <- gsub("\\s+[b-hj-z]\\s+", " ", sens)
     sens <- gsub("\\s+", " ", sens)
     sens <- stringr::str_trim(sens)
     
@@ -39,12 +39,12 @@ predict_sbf <- function(freq.table, typed_context) {
     capitalize_prediction <- FALSE
     typed_context <- clean_input(typed_context)
     
-    typed_context <- get_last_n_words(typed_context, n=MAX_NGRAM-1)
+    typed_context <- get_last_n_words(typed_context, n = MAX_NGRAM-1)
     # treat empty string and space as end of sentence tag 0EOS0
-    if (typed_context==""|typed_context==" ") {
-        typed_context<-"0EOS0"
+    if (typed_context == "" || typed_context == " ") {
+        typed_context <- "0EOS0"
     }
-    nGramToStartSearch <- nWords(typed_context)+1
+    nGramToStartSearch <- nWords(typed_context) + 1
     # the predicted words, based on contexts ending with end of sentence 
     # tag 0EOS0, will be capitalized.
     if (get_last_word(typed_context) == "0EOS0")
@@ -63,9 +63,9 @@ predict_sbf <- function(freq.table, typed_context) {
         finalResult %>% 
         select(predicted, freq, ngram, everything()) %>% 
         mutate(predicted = as.character(predicted)) %>%
-        mutate(freq=as.numeric(as.character(freq))) %>%
-        mutate(ngram=as.integer(as.character(ngram))) %>%
-        mutate( freq = freq * ((0.40)^(nGramToStartSearch-ngram)) ) %>%
+        mutate(freq = as.numeric(as.character(freq))) %>%
+        mutate(ngram = as.integer(as.character(ngram))) %>%
+        mutate(freq = freq * ((0.40)^(nGramToStartSearch-ngram)) ) %>%
         arrange(desc(ngram), desc(freq) ) %>%
         distinct(predicted)
     
@@ -86,39 +86,37 @@ random_from <- function(words) {
 }
 
 
-get_last_word <- function(s, sep=" ") {
+get_last_word <- function(s, sep = " ") {
     #stringr::word(s, -1)
     get_last_n_words(s, n=1L, sep = sep)
 }
 
-get_last_n_words <- function(s, n, sep=" ") {
+get_last_n_words <- function(s, n, sep = " ") {
     #stringr::word(s, (-1)*n, -1)
-    stopifnot(n>=1)
+    stopifnot(n >= 1)
     words <- unlist(strsplit(s, split = sep))
     len<-length(words)
-    if (len<=n)
+    if (len <= n)
         return(paste(words, collapse = sep))
     paste(words[-(1:(len-n))], collapse = sep)
 }
 
-get_first_n_words <- function(s, n, sep=" ") {
+get_first_n_words <- function(s, n, sep = " ") {
     #stringr::word(s, 1, n)
-    stopifnot(n>=1)
+    stopifnot(n >= 1)
     words <- unlist(strsplit(s, split = sep))
     len<-length(words)
-    if(len<n) 
+    if(len < n) 
         return(paste(words, collapse = sep))
     paste(words[1:n], collapse = sep)
 }
 
-nWords <- function(s, sep=" ") {
+nWords <- function(s, sep = " ") {
     #qdap::wc(s)
     #stringr::str_count(s, "\\S+")
     #stringr::str_count(s,"[[:alpha:]]+") 
     s<-as.character(s)
-    n=0
-    if (nchar(s)!=0) { 
-        n=length(unlist( strsplit(s, split = sep)  )) 
-    }
-    n
+    if (nchar(s) == 0)
+        return(0)
+    length(unlist( strsplit(s, split = sep) ))
 }
