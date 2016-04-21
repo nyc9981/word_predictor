@@ -17,7 +17,7 @@ clean_input <- function(txt_input) {
     sens <- tolower(sens)
     sens <- gsub("’", "'", sens)
     sens <- gsub("[^[:alnum:][:space:]\']", " ", sens)
-    sens <- iconv(sens, "latin1", "ASCII", sub="_0_")
+    sens <- iconv(sens, "latin1", "ASCII", sub = "_0_")
     sens <- gsub("\\w*[0-9]\\w*"," ", sens)
     sens <- gsub(" www(.+) ", " ", sens)
     sens <- gsub("\\s+[b-hj-z]\\s+", " ", sens)
@@ -65,13 +65,13 @@ predict_sbf <- function(freq.table, typed_context) {
         mutate(predicted = as.character(predicted)) %>%
         mutate(freq = as.numeric(as.character(freq))) %>%
         mutate(ngram = as.integer(as.character(ngram))) %>%
-        mutate(freq = freq * ((0.40)^(nGramToStartSearch-ngram)) ) %>%
+        mutate(freq = freq * ((0.40) ^ (nGramToStartSearch - ngram)) ) %>%
         arrange(desc(ngram), desc(freq) ) %>%
         distinct(predicted)
     
     # if the prediction is 0EOS0, then change it to "." 
-    finalResult$predicted[finalResult$predicted=="0EOS0"] <- "."
-    finalResult$predicted[finalResult$predicted=="i"] <- "I"
+    finalResult$predicted[finalResult$predicted == "0EOS0"] <- "."
+    finalResult$predicted[finalResult$predicted == "i"] <- "I"
     
     # if the context ends with 0EOS0, then captalize all predictions
     if(capitalize_prediction) {
@@ -88,25 +88,24 @@ random_from <- function(words) {
 
 get_last_word <- function(s, sep = " ") {
     #stringr::word(s, -1)
-    get_last_n_words(s, n=1L, sep = sep)
+    get_last_n_words(s, n = 1L, sep = sep)
 }
 
 get_last_n_words <- function(s, n, sep = " ") {
     #stringr::word(s, (-1)*n, -1)
     stopifnot(n >= 1)
     words <- unlist(strsplit(s, split = sep))
-    len<-length(words)
+    len <- length(words)
     if (len <= n)
         return(paste(words, collapse = sep))
-    paste(words[-(1:(len-n))], collapse = sep)
+    paste(words[-(1:(len - n))], collapse = sep)
 }
 
 get_first_n_words <- function(s, n, sep = " ") {
     #stringr::word(s, 1, n)
     stopifnot(n >= 1)
     words <- unlist(strsplit(s, split = sep))
-    len<-length(words)
-    if(len < n) 
+    if(length(words) < n) 
         return(paste(words, collapse = sep))
     paste(words[1:n], collapse = sep)
 }
@@ -115,7 +114,7 @@ nWords <- function(s, sep = " ") {
     #qdap::wc(s)
     #stringr::str_count(s, "\\S+")
     #stringr::str_count(s,"[[:alpha:]]+") 
-    s<-as.character(s)
+    s <- as.character(s)
     if (nchar(s) == 0)
         return(0)
     length(unlist( strsplit(s, split = sep) ))
