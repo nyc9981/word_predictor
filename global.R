@@ -5,7 +5,7 @@ library(ggplot2)
 freq.table<-readRDS(file="freq.tableB.RDS")
 
 ####### CONSTANTs ######### 
-TOP_RANK <- 5
+# TOP_RANK <- 5
 MAX_NGRAM <- 4
 ####### functions #########
 clean_input <- function(txt_input) {
@@ -34,8 +34,8 @@ clean_input <- function(txt_input) {
         return(sens)
 }
 
-predict_sbf <- function(freq.table, typed_context, n_pred=3) {
-    stopifnot(n_pred<=TOP_RANK & n_pred>0)
+# predict function, return all predicted words
+predict_sbf <- function(freq.table, typed_context) {
     require(dplyr)
     
     capitalize_prediction <- FALSE
@@ -70,12 +70,6 @@ predict_sbf <- function(freq.table, typed_context, n_pred=3) {
         mutate( freq = freq * ((0.40)^(nGramToStartSearch-ngram)) ) %>%
         arrange(desc(ngram), desc(freq) ) %>%
         distinct(predicted)
-    
-    # set the # of predictions to return
-    #n_pred <- ifelse (nrow(finalResult)<n_pred, nrow(finalResult), n_pred)
-    if (nrow(finalResult)>n_pred) {
-        finalResult <- finalResult[1:n_pred,]
-    } 
     
     # if the prediction is 0EOS0, then change it to "." 
     finalResult$predicted[finalResult$predicted=="0EOS0"] <- "."
