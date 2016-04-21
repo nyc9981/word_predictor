@@ -4,7 +4,7 @@ function(input, output, session){
     # Make predictions
     result <- reactive ({
         #cat(input$nPred, file=stderr())
-        predict_sbf(freq.table, input$text, input$nPred)[1:input$nPred,]
+        predict_sbf(freq.table, input$text)[1:input$nPred,]
     })
     
     # Generate a bar plot about probabilities for each predicted words
