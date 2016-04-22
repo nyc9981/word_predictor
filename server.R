@@ -4,7 +4,7 @@ function(input, output, session){
     # Make predictions
     result <- reactive ({
         #cat(input$nPred, file=stderr())
-        predict_sbf(freq.table, input$text)[1:input$nPred,]
+        predict_sbf(freq.table, input$text)[1:input$nPred, ]
     })
     
     # Generate a bar plot about probabilities for each predicted words
@@ -28,7 +28,8 @@ function(input, output, session){
     sepWords <- reactive( { 
         if(length(result()$predicted)<5) {
             c(result()$predicted, rep("", 5-length(result()$predicted)))
-        } else { result()$predicted 
+        } else { 
+            result()$predicted 
         } 
     })
     
@@ -73,7 +74,6 @@ function(input, output, session){
     
     # Update the text area with updated text
     observe({
-        #x <- input$controller
         updateTextInput(session, "text",
                         value = stringr::str_trim(my_clicks$data))
     })
