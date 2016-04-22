@@ -4,4 +4,6 @@ This Shiny app is developed as a capstone project to complete Coursera Data Scie
 
 The predictive model is built from the text corpora (a body of texts) provided by Coursera. It uses a simple Stupid Backoff algorithm.
 
+The model file was temporarily deleted, and will be put up again after the course ends. 
+
 Check it out: [https://nyc9981.shinyapps.io/word_predictor](https://nyc9981.shinyapps.io/word_predictor)
